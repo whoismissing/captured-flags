@@ -1,0 +1,27 @@
+Ran web code through javascript beautifyer
+
+Bottom code is getting values from an array
+
+if (calcMD5(prompt(_0x29a9[5])) === _0x29a9[6]) {
+    alert(_0x29a9[7])
+} else {
+    alert(_0x29a9[8])
+	
+some hashed value is being compared
+
+checked what ascii values were in the array and printed in a python interpreter
+$python3 main.py
+0123456789abcdef
+
+charAt
+length
+charCodeAt
+What is the password
+aa42b234cb05915716c1434058fe1aee16c14340cb059157aa42b234
+submit as redpwnctf{PASSWORD}
+:(
+Hello World!
+
+cracked the hash "aa42b234cb05915716c1434058fe1aee16c14340cb059157aa42b234" on crackstation to get the flag "shazam"
+
+redpwnctf{shazam}

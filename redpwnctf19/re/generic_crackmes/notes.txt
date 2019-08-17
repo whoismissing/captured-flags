@@ -1,0 +1,19 @@
+generic_crack_me
+each byte of input is added by 1
+then compared to "ephhz"
+
+plz enter password plz:
+"doggy"
+good job kthxbye
+
+generic_crack_me_redux
+| mov edx, dword [local_4h]       |                      
+| mov eax, edx                    |                      
+| shl eax, 2                      |                      
+| add eax, edx                    |                      
+| add eax, eax                    |                      
+| cmp eax, 0xac292                | 
+0xac292 / 2 = y = 4x + x
+
+Enter access code: 70517
+Access granted
