@@ -20,6 +20,8 @@ This repository's organization is inspired from https://github.com/guyinatuxedo/
 
 #### Crackmes
 + x64: redpwnctf19/re/generic_crackmes Use final comparison that is the password / access code and reverse small transformations to user input.
++ x64: hackconctf19/re/babyrev Code before and after main xor "A" with sequence of bytes 9 at a time.
++ x64: codefestctf19/re/linux_re_1 Unpack with UPX and bypass ptrace debugger check, then xor sequence of bytes with key "1337key".
 
 ## Web
 
