@@ -9,9 +9,13 @@ This repository's organization is inspired from https://github.com/guyinatuxedo/
 #### ROP Chain
 + x32: redpwnctf19/pwn/bronze_ropchain ROP to _dl_make_stack_executable then land shellcode on the stack
 + x32: redpwnctf19/pwn/zipline ROP to functions to prepare final function that will read the flag
++ x64: csawquals19/pwn/baby_boi Given a leaked printf libc address, buffer overflow, then ROP to one_gadget
 
 #### Return 2 system
 + x32: redpwnctf19/pwn/hardmode Variant of ret2system, call system("sh #") with sh string and comment character
+
+#### Sigreturn Oriented Programming (SROP)
++ x64: csawquals19/pwn/small_boi Static binary containing sigreturn gadget, buffer overflow to sigreturn and load necessary registers to make the syscall execve("/bin/sh", 0, 0)
 
 #### Format String
 + x32: redpwnctf19/pwn/rot26 Classic format string exploit, got overwrite of exit with function that calls system
