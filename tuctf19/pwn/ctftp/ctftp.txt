@@ -1,0 +1,8 @@
+Just what the world needs... another vulnerable FTP server. Have fun.
+
+nc chal.tuctf.com 30500
+
+Can you figure out the filter order?
+
+TUCTF{f1l73r_f1r57_7h3y_541d._y0u'll_b3_53cur3_7h3y_541d}
+

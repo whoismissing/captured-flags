@@ -1,0 +1,52 @@
+Enter the belly of the beast and emerge victorious.
+
+nc chal.tuctf.com 30502
+
+What all can printf do? Can you leverage it's capabilities?
+
+user input is both on the stack and the heap
+
+stack memory
+
+0xffffd240:     0xffffd2c8      0x00000020      0x0804d160      0xf7ec8d17
+0xffffd250:     0xf7fb6d80      0x0804a045      0xffffd274      0x00000000
+0xffffd260:     0xf7fb6000      0x0804c000      0xf7fb6000      0x0804940b
+
+            0x0804d160 is also the location of user_input in the heap
+                                %01$p is here
+                                 |
+                                 v
+0xffffd270:     0x00000000      [ 0x0804d160 ]     0x00000020      0x080493ba
+0xffffd280:     0x00000000      0xf7fb6000      [ 0x61616161      0x61616161 ] <= our user input
+0xffffd290:     0x00000a61      0x00000000      0x00000000      0x00000000
+0xffffd2a0:     0x00000000      0x00000000      0x00000000      0x00000012
+0xffffd2b0:     0x00000009      0x0804d160      0x00000001      0x00000000
+
+32 bytes read from the user ???
+
+0x0804948f is the vulnerable call to printf()
+
+0x804c010 <printf@got.plt>:     0xf7e2f400      0x08049060      0xf7fd3a10      0xf7e5daf0
+0x804c020 <puts@got.plt>:       0xf7e4b160      0xf7e14f10      0xf7dfd6f0      0xf7e4b7b0
+
+0x804c00c <read@got.plt>:       0xf7ec8cf0
+0x804c010 <printf@got.plt>:     0xf7e2f400
+0x804c014 <free@got.plt>:       0x08049060
+0x804c018 <time@got.plt>:       0xf7fd3a10
+0x804c01c <malloc@got.plt>:     0xf7e5daf0
+0x804c020 <puts@got.plt>:       0xf7e4b160
+0x804c024 <srand@got.plt>:      0xf7e14f10
+0x804c028 <__libc_start_main@got.plt>:  0xf7dfd6f0
+0x804c02c <setvbuf@got.plt>:    0xf7e4b7b0
+0x804c030 <memset@got.plt>:     0xf7f20970
+0x804c034 <rand@got.plt>:       0xf7e15570
+0x804c038 <atoi@got.plt>:       0xf7e12e80
+
+overwrite free_got_plt()
+
+five loops
+1. leak libc use %06$s with printf_got_plt
+2. four loops to write 4-byte value system to free_got_plt()
+
+TUCTF{I_w45_w4rn3d_4b0u7_pr1n7f..._bu7_I_d1dn'7_l1573n}
+

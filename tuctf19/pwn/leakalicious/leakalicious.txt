@@ -1,0 +1,8 @@
+King Arthur has proposed this challenge for all those who consider themselves worthy.
+
+nc chal.tuctf.com 30505
+
+BLUKAT ME! If only we knew what libc to use...
+
+TUCTF{cl0udy_w17h_4_ch4nc3_0f_l1bc}
+

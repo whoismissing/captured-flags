@@ -1,0 +1,8 @@
+Same concept, more bytes.
+
+nc chal.tuctf.com 30507
+
+Just like x86 with some different registers.
+
+TUCTF{54m3_5h3llc0d3,_ju57_m0r3_by735}
+

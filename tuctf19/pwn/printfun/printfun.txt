@@ -1,0 +1,42 @@
+I have made an impenetrable password checker. Just try your luck!
+
+nc chal.tuctf.com 30501
+
+Format strings can be extremely powerful.
+
+0x56558fc0 <sleep@got.plt>:     0xf7ea1290      0xf7e5daf0      0xf7e4b160      0xf7e213f0
+0x56558fd0 <open@got.plt>:      0xf7ec88f0      0xf7dfd6f0      0xf7e4b7b0      0xf7f20970
+0x56558fe0 <close@got.plt>:     0xf7ec98d0      0x00000000      0xf7e14810      0x00000000
+
+0x56556030 <strcmp@plt>:        0x000ca3ff      0x00680000      0xe9000000      0xffffffe0        
+0x56556040 <read@plt>:  0x0010a3ff      0x08680000      0xe9000000      0xffffffd0                
+0x56556050 <printf@plt>:        0x0014a3ff      0x10680000      0xe9000000      0xffffffc0
+0x56556060 <sleep@plt>: 0x0018a3ff      0x18680000      0xe9000000      0xffffffb0                                                               
+0x56556070 <malloc@plt>:        0x001ca3ff      0x20680000      0xe9000000      0xffffffa0
+0x56556080 <puts@plt>:  0x0020a3ff      0x28680000      0xe9000000      0xffffff90        
+0x56556090 <system@plt>:        0x0024a3ff      0x30680000      0xe9000000      0xffffff80
+0x565560a0 <open@plt>:  0x0028a3ff      0x38680000      0xe9000000      0xffffff70        
+0x565560b0 <__libc_start_main@plt>:     0x002ca3ff      0x40680000      0xe9000000      0xffffff60
+0x565560c0 <setvbuf@plt>:       0x0030a3ff      0x48680000      0xe9000000      0xffffff50
+0x565560d0 <memset@plt>:        0x0034a3ff      0x50680000      0xe9000000      0xffffff40
+0x565560e0 <close@plt>: 0x0038a3ff      0x58680000      0xe9000000      0xffffff30
+
+0x565563c3 <+314>:   call   0x56556090 <system@plt>
+
+user input is on the heap
+
+vulnerable printf() here
+0x5655637d <main+244>       call   0x56556050 <printf@plt>
+
+0xf7dfd7e8 <__libc_start_main+248> call   0xf7e14510 <exit>
+
+overwrite strcmp() with system() that way arg is already set up
+0x5655639b <main+274>       call   0x56556030 <strcmp@plt>
+
+0x565563c3 <main+314>:       call   0x56556090 <system@plt>
+
+0x5655a1b0 is the address of the input buffer in the heap
+%01$p will print out this address
+
+TUCTF{wh47'5_4_pr1n7f_l1k3_y0u_d01n6_4_b1n4ry_l1k3_7h15?}
+

@@ -1,0 +1,16 @@
+We've recovered this file but can't make much of it.
+Do you see a procedural way to recover the password?
+
+0000000000000000 <passlen>:
+   0:   2c 00                   sub    $0x0,%al
+   passlen = 0x2c = 44
+
+.o file is the input to the linker
+https://stackoverflow.com/questions/24655839/what-is-the-difference-between-executable-and-relocatable-in-elf-format
+
+So we need to link it to get an runnable executable
+gcc run.o -O0 -fPIC -W -ggdb -ldl
+
+gef➤  dump memory password.bin 0x0000555555556008 0x555555556034 
+
+TUCTF{c0n6r47ul4710n5_0n_br34k1n6_7h15_fl46}

