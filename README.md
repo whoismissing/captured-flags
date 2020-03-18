@@ -1,6 +1,6 @@
 # captured-flags
 
-My solutions and notes for CTFs that I've played. This is a way for me to document my learning and techniques used.
+My solutions and notes for CTFs that I've played. This is a way for me to document my learning and techniques used. For all of the successful solves here, there are many more challenges for which I failed and learned from.
 
 This repository's organization is inspired from https://github.com/guyinatuxedo/ctf
 
@@ -9,7 +9,7 @@ This repository's organization is inspired from https://github.com/guyinatuxedo/
 #### ROP Chain
 + x32: [2019/redpwnctf19/pwn/bronze_ropchain](https://github.com/whoismissing/captured-flags/blob/master/2019/redpwnctf19/pwn/bronze_ropchain/bronze_ropchain_gdb.py) ROP to _dl_make_stack_executable then land shellcode on the stack
 + x32: [2019/redpwnctf19/pwn/zipline](https://github.com/whoismissing/captured-flags/blob/master/2019/redpwnctf19/pwn/zipline/zipline_exploit.py) ROP to functions to prepare final function that will read the flag
-+ x64: csawquals19/pwn/baby_boi Given a leaked printf libc address, buffer overflow, then ROP to one_gadget
++ x64: [2019/csawquals19/pwn/baby_boi](https://github.com/whoismissing/captured-flags/blob/master/2019/csawquals19/pwn/baby_boi/baby_boi_solution.py) Given a leaked printf libc address, buffer overflow, then ROP to one_gadget
 
 #### Return 2 system
 + x32: [2019/redpwnctf19/pwn/hardmode](https://github.com/whoismissing/captured-flags/blob/master/2019/redpwnctf19/pwn/hardmode/notes.txt) Variant of ret2system, call system("sh #") with sh string and comment character
