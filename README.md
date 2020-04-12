@@ -23,6 +23,7 @@ This repository's organization is inspired from https://github.com/guyinatuxedo/
 + x32: [2019/redpwnctf19/pwn/rot26](https://github.com/whoismissing/captured-flags/blob/master/2019/redpwnctf19/pwn/rot26/notes.txt) Classic format string exploit, got overwrite of exit with function that calls system
 + x32: [2019/tuctf19/pwn/vulnmath](https://github.com/whoismissing/captured-flags/blob/master/2019/tuctf19/pwn/vulnmath/vulnmath.py) Format string exploit, user input can be passed 5 times, so leak puts got_plt then overwrite free got_plt with system libc address with the remaining loops in four writes
 + x32: [2019/tuctf19/pwn/printfun](https://github.com/whoismissing/captured-flags/blob/master/2019/tuctf19/pwn/printfun/printfun.py) Format string exploit, overwrite the same value to two buffers so strcmp(buf1, buf2) will return true
++ x64: [2020/bytebandits20/pwn/fmt-me](./2020/bytebandits20/pwn/fmt-me/fmt-me_solution.py) Format string bug in snprintf(). Overwrite system got.plt with main to loop, trigger the bug again to overwrite atoi got.plt with the address to system plt
 
 #### Stack Buffer Overflow
 + x32: [2019/tuctf19/pwn/3step](https://github.com/whoismissing/captured-flags/blob/master/2019/tuctf19/pwn/3step/3step.py) Stack buffer overflow to execute shellcode among two buffers jumping from stack to heap
