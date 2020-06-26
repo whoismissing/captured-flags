@@ -10,6 +10,7 @@ This repository's organization is inspired from https://github.com/guyinatuxedo/
 + x32: [2019/redpwnctf19/pwn/bronze_ropchain](https://github.com/whoismissing/captured-flags/blob/master/2019/redpwnctf19/pwn/bronze_ropchain/bronze_ropchain_gdb.py) ROP to _dl_make_stack_executable then land shellcode on the stack
 + x32: [2019/redpwnctf19/pwn/zipline](https://github.com/whoismissing/captured-flags/blob/master/2019/redpwnctf19/pwn/zipline/zipline_exploit.py) ROP to functions to prepare final function that will read the flag
 + x64: [2019/csawquals19/pwn/baby_boi](https://github.com/whoismissing/captured-flags/blob/master/2019/csawquals19/pwn/baby_boi/baby_boi_solution.py) Given a leaked printf libc address, buffer overflow, then ROP to one_gadget
++ x64: [2020/redpwn20/pwn/the-library/solution.py](2020/redpwn20/pwn/the-library/solution.py) Using ROP gadgets in function epilogue of `__libc_csu_init()` to call puts(puts_got) to leak a libc address, then compute and land with one_gadget
 
 #### Return 2 system
 + x32: [2019/redpwnctf19/pwn/hardmode](https://github.com/whoismissing/captured-flags/blob/master/2019/redpwnctf19/pwn/hardmode/notes.txt) Variant of ret2system, call system("sh #") with sh string and comment character
@@ -29,6 +30,7 @@ This repository's organization is inspired from https://github.com/guyinatuxedo/
 + x32: [2019/tuctf19/pwn/3step](https://github.com/whoismissing/captured-flags/blob/master/2019/tuctf19/pwn/3step/3step.py) Stack buffer overflow to execute shellcode among two buffers jumping from stack to heap
 + x32: [2019/tuctf19/pwn/pancakes](https://github.com/whoismissing/captured-flags/blob/master/2019/tuctf19/pwn/pancakes/pancakes.py) Stack buffer overflow to call puts() to leak a password in data section
 + x32: [2019/tuctf19/pwn/leakalicious](https://github.com/whoismissing/captured-flags/blob/master/2019/tuctf19/pwn/leakalicious/leakalicious_final.py) Leak puts libc address, then use libc.blukat.me libc database to identify libc version. Stack buffer overflow and ROP to one_gadget
++ x64: [2020/redpwn20/pwn/skywriting/skywriting_solve.py](./2020/redpwn20/pwn/skywriting/skywriting_solve.py) Infinite loop and stack buffer overflow. We use this to systematically leak rbp, stack canary, and a libc address. Then we buffer overflow and trigger a ret to ROP to one_gadget.
 
 ## Reverse Engineering (RE)
 
