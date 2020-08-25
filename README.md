@@ -32,6 +32,9 @@ This repository's organization is inspired from https://github.com/guyinatuxedo/
 + x32: [2019/tuctf19/pwn/leakalicious](https://github.com/whoismissing/captured-flags/blob/master/2019/tuctf19/pwn/leakalicious/leakalicious_final.py) Leak puts libc address, then use libc.blukat.me libc database to identify libc version. Stack buffer overflow and ROP to one_gadget
 + x64: [2020/redpwn20/pwn/skywriting/skywriting_solve.py](./2020/redpwn20/pwn/skywriting/skywriting_solve.py) Infinite loop and stack buffer overflow. We use this to systematically leak rbp, stack canary, and a libc address. Then we buffer overflow and trigger a ret to ROP to one_gadget.
 
+#### Shellcode
++ x64: [2020/googlectf20/sandbox/writeonly/writeonly_solve.py](./2020/googlectf20/sandbox/writeonly/writeonly_solve.py) Seccomp rules disable read syscall. The program forks, provides the child pid, the child reads the flag, the parent adds the seccomp rules and executes shellcode. We write shellcode to open(/proc/child_pid/mem), lseek(), and write() to the code section of the child in order to patch the child process to print the flag.
+
 ## Reverse Engineering (RE)
 
 #### Crackmes
